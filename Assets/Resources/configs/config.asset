@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88201a41f18111440b0511f302ea81f8, type: 3}
+  m_Name: config
+  m_EditorClassIdentifier: Assembly-CSharp::GameConfig
+  foodReward: 1
+  trapPenalty: -1
+  surviveRewardPerSecond: 0.01
+  getCatched: -1
+  deadPenalty: -1
+  agentMaxHP: 100
+  iFrameSeconds: 0.7
+  foodCount: 8
+  trapCount: 4
+  foodHeight: 1
+  trapHeight: 0
+  trapDamageHP: 25
+  hungerEnabled: 1
+  hungerGraceSec: 15
+  hungerNegRewardPerSec: -0.01
+  hardStarvation: 0
+  hardStarveTimeoutSec: 30
+  starvationTerminalReward: -1
+  hungerResetsOnFood: 1
+  hungerExtraGraceOnFood: 30
+  agentTag: Agent

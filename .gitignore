@@ -1,0 +1,36 @@
+# ========== Unity 自动生成的文件夹 ==========
+Library/
+[Tt]emp/
+[Ll]ogs/
+[Bb]uild/
+[Bb]uilds/
+[Oo]bj/
+[Uu]ser[Ss]ettings/
+
+# ========== IDE / 工具配置 ==========
+.vs/
+.vscode/
+.vsconfig
+
+# ========== Unity 生成的解决方案/工程文件 ==========
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# ========== Unity 自动导出/升级日志 ==========
+UpgradeLog*.htm
+
+# ========== 其它杂项 ==========
+.DS_Store
+Thumbs.db
+desktop.ini
+*.unitypackage
