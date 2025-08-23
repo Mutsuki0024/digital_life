@@ -14,9 +14,12 @@ public class MyAgent : Agent
 
     // ==== 新增：运动参数 ====
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 5f;   // 米/秒
+    [SerializeField] private float moveSpeed = 5f;     // 前进速度 m/s
+    [SerializeField] private float turnSpeed = 180f;   // 转向速度 度/s
     private Rigidbody rb;
-    private Vector2 lastMove; // 保存上一次决策的输入
+    // === 用于保存动作输入 ===
+    private float turnInput;
+    private float throttleInput;
 
     public override void Initialize()
     {
@@ -50,14 +53,11 @@ public class MyAgent : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        // 读入动作（-1~1）
-        var ca = actions.ContinuousActions;
-        float h = ca.Length > 0 ? ca[0] : 0f;
-        float v = ca.Length > 1 ? ca[1] : 0f;
-
-        Vector2 move = new Vector2(h, v);
-        if (move.sqrMagnitude > 1f) move.Normalize();
-        lastMove = move; // 存起来，物理帧里用
+        // 读取动作（-1~1）
+        turnInput = (actions.ContinuousActions.Length > 0)
+                    ? Mathf.Clamp(actions.ContinuousActions[0], -1f, 1f) : 0f;
+        throttleInput = (actions.ContinuousActions.Length > 1)
+                    ? Mathf.Clamp(actions.ContinuousActions[1], -1f, 1f) : 0f;
 
         // 饥饿机制（柔性/硬性）——按帧给 shaping
         if (cfg.hungerEnabled)
@@ -87,41 +87,40 @@ public class MyAgent : Agent
     {
         var ca = actionsOut.ContinuousActions;
 
-        float h = 0f;
-        float v = 0f;
+        float turn = 0f;   // 左右
+        float throttle = 0f; // 上下
 
-        // 键盘 WASD / 方向键
         if (Keyboard.current != null)
         {
-            if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed) h -= 1f;
-            if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed) h += 1f;
-            if (Keyboard.current.sKey.isPressed || Keyboard.current.downArrowKey.isPressed) v -= 1f;
-            if (Keyboard.current.wKey.isPressed || Keyboard.current.upArrowKey.isPressed) v += 1f;
+            // 左右转向
+            if (Keyboard.current.leftArrowKey.isPressed || Keyboard.current.aKey.isPressed) turn -= 1f;
+            if (Keyboard.current.rightArrowKey.isPressed || Keyboard.current.dKey.isPressed) turn += 1f;
+            // 前后油门
+            if (Keyboard.current.upArrowKey.isPressed || Keyboard.current.wKey.isPressed) throttle += 1f;
+            if (Keyboard.current.downArrowKey.isPressed || Keyboard.current.sKey.isPressed) throttle -= 1f;
         }
 
-        // 归一化，避免对角线超过 1
-        Vector2 move = new Vector2(h, v);
-        if (move.sqrMagnitude > 1f) move.Normalize();
+        ca[0] = Mathf.Clamp(turn, -1f, 1f);
+        ca[1] = Mathf.Clamp(throttle, -1f, 1f);
 
-        if (ca.Length >= 2)
-        {
-            ca[0] = move.x; // 水平
-            ca[1] = move.y; // 垂直
-        }
-        
     }
-
 
     //
     private void FixedUpdate()
     {
-        Debug.Log("running!");
-        // 把二维输入映射到世界 xz
-        Vector3 wishVel = new Vector3(lastMove.x, 0f, lastMove.y) * moveSpeed;
+        // === 转向 ===
+        float yawDelta = turnInput * turnSpeed * Time.fixedDeltaTime;
+        if (Mathf.Abs(yawDelta) > 0f)
+        {
+            Quaternion deltaRot = Quaternion.Euler(0f, yawDelta, 0f);
+            rb.MoveRotation(rb.rotation * deltaRot);
+        }
 
-        // 简单：直接设速度（保留y速度以受重力影响）
-        rb.linearVelocity = new Vector3(wishVel.x, rb.linearVelocity.y, wishVel.z);
+        // === 前进/后退 ===
+        Vector3 forwardVel = transform.forward * (throttleInput * moveSpeed);
+        rb.linearVelocity = new Vector3(forwardVel.x, rb.linearVelocity.y, forwardVel.z);
     }
+
 
     //=========与食物、陷阱、捕食者交互逻辑===========
     public void OnAteFood()
@@ -154,7 +153,4 @@ public class MyAgent : Agent
             GameManager.Instance.EndEpisode();
         }
     }
-
-
-
 }
