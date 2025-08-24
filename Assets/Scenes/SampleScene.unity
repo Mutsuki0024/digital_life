@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 54273365}
   - component: {fileID: 54273364}
   - component: {fileID: 54273363}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: edge_wall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: 115751720}
   - component: {fileID: 115751719}
   - component: {fileID: 115751718}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: wall1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -418,7 +418,7 @@ GameObject:
   - component: {fileID: 144240645}
   - component: {fileID: 144240644}
   - component: {fileID: 144240643}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: cylinder4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -531,7 +531,7 @@ GameObject:
   - component: {fileID: 167698269}
   - component: {fileID: 167698268}
   - component: {fileID: 167698267}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: cylinder1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -641,7 +641,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 176472187}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FoodPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -675,7 +675,7 @@ GameObject:
   - component: {fileID: 205758380}
   - component: {fileID: 205758379}
   - component: {fileID: 205758378}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: cylinder7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -785,7 +785,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 211201501}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: L_wall4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -869,7 +869,7 @@ GameObject:
   - component: {fileID: 284436410}
   - component: {fileID: 284436409}
   - component: {fileID: 284436408}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: wall3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -982,7 +982,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 305651732}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TrapPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1020,8 +1020,8 @@ GameObject:
   - component: {fileID: 326142339}
   - component: {fileID: 326142345}
   - component: {fileID: 326142344}
-  m_Layer: 6
-  m_Name: Cube
+  m_Layer: 10
+  m_Name: agent
   m_TagString: Agent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1181,7 +1181,9 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
-  moveSpeed: 5
+  rayLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!54 &326142346
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1358,7 +1360,7 @@ GameObject:
   - component: {fileID: 358344864}
   - component: {fileID: 358344863}
   - component: {fileID: 358344862}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: wall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1469,7 +1471,7 @@ GameObject:
   - component: {fileID: 406229097}
   - component: {fileID: 406229096}
   - component: {fileID: 406229095}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: cylinder3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1709,7 +1711,7 @@ GameObject:
   - component: {fileID: 531017445}
   - component: {fileID: 531017444}
   - component: {fileID: 531017443}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: wall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1820,7 +1822,7 @@ GameObject:
   - component: {fileID: 735436289}
   - component: {fileID: 735436288}
   - component: {fileID: 735436287}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: cylinder2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2066,7 +2068,7 @@ GameObject:
   - component: {fileID: 924884484}
   - component: {fileID: 924884483}
   - component: {fileID: 924884482}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: cylinder6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2179,7 +2181,7 @@ GameObject:
   - component: {fileID: 1177104035}
   - component: {fileID: 1177104034}
   - component: {fileID: 1177104033}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: wall6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2290,7 +2292,7 @@ GameObject:
   - component: {fileID: 1184272626}
   - component: {fileID: 1184272625}
   - component: {fileID: 1184272624}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: cylinder8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2400,7 +2402,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1351852213}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: L_wall1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2436,7 +2438,7 @@ GameObject:
   - component: {fileID: 1401468950}
   - component: {fileID: 1401468949}
   - component: {fileID: 1401468948}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: edge_wall4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2544,7 +2546,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1402515826}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: L_wall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2577,7 +2579,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1513326297}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: L_wall3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2678,7 +2680,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1659955822}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: obstacles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2730,7 +2732,7 @@ GameObject:
   - component: {fileID: 1676818451}
   - component: {fileID: 1676818450}
   - component: {fileID: 1676818449}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: wall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2841,7 +2843,7 @@ GameObject:
   - component: {fileID: 1681925679}
   - component: {fileID: 1681925678}
   - component: {fileID: 1681925677}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: wall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2949,7 +2951,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1719276762}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: edge_walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2987,7 +2989,7 @@ GameObject:
   - component: {fileID: 1722180012}
   - component: {fileID: 1722180011}
   - component: {fileID: 1722180010}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: wall1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3098,7 +3100,7 @@ GameObject:
   - component: {fileID: 1738250364}
   - component: {fileID: 1738250363}
   - component: {fileID: 1738250362}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: wall1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3209,7 +3211,7 @@ GameObject:
   - component: {fileID: 1780289320}
   - component: {fileID: 1780289319}
   - component: {fileID: 1780289318}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: wall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3320,7 +3322,7 @@ GameObject:
   - component: {fileID: 1781541771}
   - component: {fileID: 1781541770}
   - component: {fileID: 1781541769}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: wall5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3431,7 +3433,7 @@ GameObject:
   - component: {fileID: 1820972106}
   - component: {fileID: 1820972105}
   - component: {fileID: 1820972104}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: edge_wall1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3542,7 +3544,7 @@ GameObject:
   - component: {fileID: 1866097274}
   - component: {fileID: 1866097273}
   - component: {fileID: 1866097272}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: wall1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3653,7 +3655,7 @@ GameObject:
   - component: {fileID: 1871657229}
   - component: {fileID: 1871657228}
   - component: {fileID: 1871657227}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: wall4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3764,7 +3766,7 @@ GameObject:
   - component: {fileID: 1956762245}
   - component: {fileID: 1956762244}
   - component: {fileID: 1956762243}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: wall1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3875,7 +3877,7 @@ GameObject:
   - component: {fileID: 2037634344}
   - component: {fileID: 2037634343}
   - component: {fileID: 2037634342}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: edge_wall3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3986,7 +3988,7 @@ GameObject:
   - component: {fileID: 2063273556}
   - component: {fileID: 2063273555}
   - component: {fileID: 2063273554}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: cylinder5
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -21,7 +21,7 @@ public static class gameUtils
             // 衝突検査用のボックスを作る
             Vector3 halfExtents = new Vector3(checkRadius, 3f, checkRadius);
 
-            int layerMask = LayerMask.GetMask("block");
+            int layerMask = LayerMask.GetMask("Food", "Agent", "Trap", "Wall");
 
             // 衝突検査
             int hit = Physics.OverlapBoxNonAlloc(position, halfExtents, _buf, Quaternion.identity, layerMask);

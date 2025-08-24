@@ -4,6 +4,7 @@ using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using UnityEngine.Assertions.Must;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 
 public class MyAgent : Agent
@@ -12,23 +13,38 @@ public class MyAgent : Agent
     private float timeSinceLastFood;
     GameConfig cfg;
 
-    // ==== 新增：运动参数 ====
+    // ====运动参数====
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 5f;     // 前进速度 m/s
-    [SerializeField] private float turnSpeed = 180f;   // 转向速度 度/s
+    private float moveSpeed;     // 前进速度 m/s
+    private float turnSpeed;   // 转向速度 度/s
     private Rigidbody rb;
-    // === 用于保存动作输入 ===
+
+    // ===用于保存动作输入===
     private float turnInput;
     private float throttleInput;
+
+    // ===sensor===
+    [Header("Ray Sensors")]
+    [SerializeField] private LayerMask rayLayerMask;
+    private RayPerceptionSensorComponent3D sensorForward; // 远距前向扇形
+    private RayPerceptionSensorComponent3D sensorNearRing; // 近距环形
 
     public override void Initialize()
     {
         cfg = Config.Instance;
 
-        // ==== 新增：抓刚体并防侧翻 ====
+        // エージェントの運動パラメータを初期化
+        moveSpeed = cfg.moveSpeed;
+        turnSpeed = cfg.turnSpeed;
+
+        // About sensor
+        CreateRaySensors();
+
+        // About Rigid
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = false; // 确保不是 Kinematic
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+
     }
 
     public override void OnEpisodeBegin()
@@ -41,6 +57,7 @@ public class MyAgent : Agent
         //出生点
     }
 
+    // =======观测、输入、输出处理=========
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation((float)hp / cfg.agentMaxHP);  // observe the remaining hp
@@ -121,6 +138,38 @@ public class MyAgent : Agent
         rb.linearVelocity = new Vector3(forwardVel.x, rb.linearVelocity.y, forwardVel.z);
     }
 
+    //============sensor======================
+    private void CreateRaySensors()
+    {
+        var detectableTags = new List<string> { "Food", "Trap", "Wall" };
+
+        // 前向远距扇形sensor
+        sensorForward = gameObject.AddComponent<RayPerceptionSensorComponent3D>();
+        sensorForward.SensorName = "Ray_Forward";
+        sensorForward.DetectableTags = detectableTags;
+        sensorForward.RaysPerDirection = 6;  //両側に六本のレイがあり、中央の一本を加えて全部十三本
+        sensorForward.MaxRayDegrees = 90f;  //前方扇形の角度
+        sensorForward.RayLength = 12f;  //レイの長さ
+        sensorForward.SphereCastRadius = 0.05f; //レイの半径
+        sensorForward.RayLayerMask = rayLayerMask; //探索されるlayerを指定
+        sensorForward.StartVerticalOffset = 0.1f; //地面と間違えて接するのをさけるために少し上げる
+        sensorForward.EndVerticalOffset = 0.1f;
+
+
+        // ---------- B: 近距环形短射线 ----------
+        sensorNearRing = gameObject.AddComponent<RayPerceptionSensorComponent3D>();
+        sensorNearRing.SensorName = "Ray_B_NearRing";
+        sensorNearRing.DetectableTags = detectableTags;
+        sensorNearRing.RaysPerDirection = 8;       // 环形密一点
+        sensorNearRing.MaxRayDegrees = 180f;       // 180° + 两侧 = 360° 环形
+        sensorNearRing.RayLength = 1.25f;          // 贴身防漏
+        sensorNearRing.SphereCastRadius = 0.05f;
+        sensorNearRing.RayLayerMask = rayLayerMask;
+        sensorNearRing.StartVerticalOffset = 0.1f;
+        sensorNearRing.EndVerticalOffset = 0.1f;
+
+        
+    }
 
     //=========与食物、陷阱、捕食者交互逻辑===========
     public void OnAteFood()

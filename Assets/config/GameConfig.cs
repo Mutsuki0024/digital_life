@@ -13,6 +13,8 @@ public class GameConfig : ScriptableObject
     [Header("Agent")]
     public int agentMaxHP = 100;
     public float iFrameSeconds = 0.7f;
+    public float moveSpeed = 5f;
+    public float turnSpeed = 180f;
 
     [Header("GameInitial")]
     public int foodCount = 8;
