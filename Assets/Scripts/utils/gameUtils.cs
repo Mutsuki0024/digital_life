@@ -30,7 +30,7 @@ public static class gameUtils
             {
                 return position;
             }
-            Debug.Log("retry!");
+            //Debug.Log("retry!");
         }
     }
 }

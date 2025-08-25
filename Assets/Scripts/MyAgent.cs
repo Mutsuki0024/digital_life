@@ -49,12 +49,32 @@ public class MyAgent : Agent
 
     public override void OnEpisodeBegin()
     {
-        GameManager.Instance.ResetEnvironment();
 
         hp = cfg.agentMaxHP;
         timeSinceLastFood = 0f;
 
         //出生点
+        ResetAgentPos();
+    }
+
+    private void ResetAgentPos()
+    {
+        // 清空速度，避免带入上回合惯性
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        Vector3 spawnPos = gameUtils.GetRandomSpawnPosition(cfg.agentHeight, 0.7f);
+
+        // 随机朝向（只绕 Y 轴）
+        float yaw = Random.Range(0f, 360f);
+        Quaternion rot = Quaternion.Euler(0f, yaw, 0f);
+
+        // 应用位置与方向
+        transform.SetPositionAndRotation(spawnPos, rot);
+
+        // 清零上帧动作缓存，避免第一帧残留输入
+        turnInput = 0f;
+        throttleInput = 0f;
     }
 
     // =======观测、输入、输出处理=========
@@ -65,7 +85,27 @@ public class MyAgent : Agent
         sensor.AddObservation(timeSinceLastFood / cfg.hardStarveTimeoutSec);  // observe the left time to starve to death
         sensor.AddObservation(cfg.hardStarvation ? 1f : 0f); // tell agent if the hardStarvation is on
 
-        //To DO: add other observation
+        // 1) 朝向（用 sin/cos，而不是角度，避免2π不连续）
+        Vector3 fwd = transform.forward;
+        sensor.AddObservation(fwd.x);
+        sensor.AddObservation(fwd.z); // 地面场景只要XZ平面
+
+        // 2) 线速度（转到局部坐标），并做归一化
+        Vector3 vLocal = transform.InverseTransformDirection(rb.linearVelocity);
+        float vNorm = moveSpeed > 0f ? 1f / moveSpeed : 1f;
+        sensor.AddObservation(Mathf.Clamp(vLocal.x * vNorm, -1f, 1f)); // 侧滑
+        sensor.AddObservation(Mathf.Clamp(vLocal.z * vNorm, -1f, 1f)); // 前后速度
+
+        // 3) 角速度（只要绕Y），归一化
+        float yawRate = rb.angularVelocity.y;             // rad/s
+        float yawRateNorm = Mathf.Deg2Rad * turnSpeed;    // 期望上界（把度/s转成rad/s）
+        if (yawRateNorm <= 0f) yawRateNorm = 1f;
+        sensor.AddObservation(Mathf.Clamp(yawRate / yawRateNorm, -1f, 1f));
+
+        // 4) （可选）上一帧动作，有助于稳定与 credit assignment
+        sensor.AddObservation(turnInput);     // [-1, 1]
+        sensor.AddObservation(throttleInput); // [-1, 1]
+        //Debug.Log("Collecting...");
     }
 
     public override void OnActionReceived(ActionBuffers actions)

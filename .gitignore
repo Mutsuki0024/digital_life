@@ -1,5 +1,7 @@
 # ========== Unity 自动生成的文件夹 ==========
 Library/
+mlagents_env/
+Packages/
 [Tt]emp/
 [Ll]ogs/
 [Bb]uild/

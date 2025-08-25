@@ -19,12 +19,15 @@ MonoBehaviour:
   deadPenalty: -1
   agentMaxHP: 100
   iFrameSeconds: 0.7
-  foodCount: 8
-  trapCount: 4
+  moveSpeed: 5
+  turnSpeed: 180
+  foodCount: 16
+  trapCount: 5
   foodHeight: 1
   trapHeight: 0
-  trapDamageHP: 25
-  hungerEnabled: 1
+  agentHeight: 0.5
+  trapDamage: 25
+  hungerEnabled: 0
   hungerGraceSec: 15
   hungerNegRewardPerSec: -0.01
   hardStarvation: 0

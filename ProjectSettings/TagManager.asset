@@ -6,6 +6,9 @@ TagManager:
   tags:
   - ground
   - Agent
+  - Food
+  - Trap
+  - Wall
   layers:
   - Default
   - TransparentFX

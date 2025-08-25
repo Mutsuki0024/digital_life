@@ -21,6 +21,7 @@ public class GameConfig : ScriptableObject
     public int trapCount = 4;
     public float foodHeight = 1f;
     public float trapHeight = 0f;
+    public float agentHeight = 0.5f;
 
 
     [Header("Trap")]

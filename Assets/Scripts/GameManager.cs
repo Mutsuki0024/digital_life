@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public Transform trapPoolParent;  // 陷阱对象池的parent
     private ObjectPool _foodPool;  //食物对象池
     private ObjectPool _trapPool;  //陷阱对象池
+    //ptivate 
 
     private GameConfig _cfg;
 
@@ -70,6 +71,7 @@ public class GameManager : MonoBehaviour
 
     public void ResetEnvironment()
     {
+        Debug.Log("RESET!!");
         // delete current spawns
         _foodPool.ReturnAllActive();
         _trapPool.ReturnAllActive();

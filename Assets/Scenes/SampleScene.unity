@@ -135,6 +135,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 927168947489791662, guid: 3d343781de476c545bf2944a340fbb98, type: 3}
+      propertyPath: m_TagString
+      value: Food
+      objectReference: {fileID: 0}
     - target: {fileID: 7969146291937014714, guid: 3d343781de476c545bf2944a340fbb98, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.27
@@ -198,7 +202,7 @@ GameObject:
   - component: {fileID: 54273363}
   m_Layer: 8
   m_Name: edge_wall2
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -420,7 +424,7 @@ GameObject:
   - component: {fileID: 144240643}
   m_Layer: 8
   m_Name: cylinder4
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -533,7 +537,7 @@ GameObject:
   - component: {fileID: 167698267}
   m_Layer: 8
   m_Name: cylinder1
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -677,7 +681,7 @@ GameObject:
   - component: {fileID: 205758378}
   m_Layer: 8
   m_Name: cylinder7
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -787,7 +791,7 @@ GameObject:
   - component: {fileID: 211201501}
   m_Layer: 8
   m_Name: L_wall4
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -871,7 +875,7 @@ GameObject:
   - component: {fileID: 284436408}
   m_Layer: 8
   m_Name: wall3
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1040,7 +1044,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.ML-Agents::Unity.MLAgents.Policies.BehaviorParameters
   m_BrainParameters:
-    VectorObservationSize: 4
+    VectorObservationSize: 11
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 2
@@ -1051,8 +1055,8 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
-  m_BehaviorType: 1
-  m_BehaviorName: My Behavior
+  m_BehaviorType: 0
+  m_BehaviorName: MyAgent
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
@@ -1183,7 +1187,7 @@ MonoBehaviour:
   MaxStep: 0
   rayLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 448
 --- !u!54 &326142346
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1473,7 +1477,7 @@ GameObject:
   - component: {fileID: 406229095}
   m_Layer: 8
   m_Name: cylinder3
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1713,7 +1717,7 @@ GameObject:
   - component: {fileID: 531017443}
   m_Layer: 8
   m_Name: wall2
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1824,7 +1828,7 @@ GameObject:
   - component: {fileID: 735436287}
   m_Layer: 8
   m_Name: cylinder2
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2070,7 +2074,7 @@ GameObject:
   - component: {fileID: 924884482}
   m_Layer: 8
   m_Name: cylinder6
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2183,7 +2187,7 @@ GameObject:
   - component: {fileID: 1177104033}
   m_Layer: 8
   m_Name: wall6
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2294,7 +2298,7 @@ GameObject:
   - component: {fileID: 1184272624}
   m_Layer: 8
   m_Name: cylinder8
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2404,7 +2408,7 @@ GameObject:
   - component: {fileID: 1351852213}
   m_Layer: 8
   m_Name: L_wall1
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2440,7 +2444,7 @@ GameObject:
   - component: {fileID: 1401468948}
   m_Layer: 8
   m_Name: edge_wall4
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2548,7 +2552,7 @@ GameObject:
   - component: {fileID: 1402515826}
   m_Layer: 8
   m_Name: L_wall2
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2581,7 +2585,7 @@ GameObject:
   - component: {fileID: 1513326297}
   m_Layer: 8
   m_Name: L_wall3
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2662,6 +2666,10 @@ PrefabInstance:
     - target: {fileID: 4952193057612654001, guid: 0aba5fdf01038c640a233db7cc05db9f, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4952193057612654001, guid: 0aba5fdf01038c640a233db7cc05db9f, type: 3}
+      propertyPath: m_TagString
+      value: Trap
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3324,7 +3332,7 @@ GameObject:
   - component: {fileID: 1781541769}
   m_Layer: 8
   m_Name: wall5
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3435,7 +3443,7 @@ GameObject:
   - component: {fileID: 1820972104}
   m_Layer: 8
   m_Name: edge_wall1
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3657,7 +3665,7 @@ GameObject:
   - component: {fileID: 1871657227}
   m_Layer: 8
   m_Name: wall4
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3768,7 +3776,7 @@ GameObject:
   - component: {fileID: 1956762243}
   m_Layer: 8
   m_Name: wall1
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3879,7 +3887,7 @@ GameObject:
   - component: {fileID: 2037634342}
   m_Layer: 8
   m_Name: edge_wall3
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3990,7 +3998,7 @@ GameObject:
   - component: {fileID: 2063273554}
   m_Layer: 8
   m_Name: cylinder5
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
