@@ -17,6 +17,10 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Application.runInBackground = true;   // 即使窗口不在前台也不停
+        QualitySettings.vSyncCount = 0;       // 不要被 vSync 卡住
+        Application.targetFrameRate = 60;     // 或 -1（不限制）
+
         _cfg = Config.Instance;
         if (Instance != null && Instance != this)
         {

@@ -4,23 +4,25 @@ using UnityEngine;
 public class GameConfig : ScriptableObject
 {
     [Header("Rewards")]
-    public float foodReward = 1.0f;
-    public float trapPenalty = -1.0f;
+    public float foodReward = 3.0f;
+    public float forwardReward = 0.05f;
+    public float trapPenalty = -5.0f;
     public float surviveRewardPerSecond = 0.01f;
     public float getCatched = -1.0f;
-    public float deadPenalty = -1.0f;
+    public float deadPenalty = -7.0f;
 
     [Header("Agent")]
     public int agentMaxHP = 100;
     public float iFrameSeconds = 0.7f;
     public float moveSpeed = 5f;
     public float turnSpeed = 180f;
-    public float lambdaActionChange = 0.02f;   // 连贯性系数，先小一点
+    public float lambdaActionChange = 0.005f;   // 连贯性系数，先小一点
+    public float eps = 0.01f; //正向位移奖励阈值
 
     [Header("GameInitial")]
-    public int foodCount = 16;
+    public int foodCount = 30;
     public int trapCount = 5;
-    public float foodHeight = 1f;
+    public float foodHeight = 0.5f;
     public float trapHeight = 0f;
     public float agentHeight = 0.5f;
 
@@ -29,7 +31,7 @@ public class GameConfig : ScriptableObject
     public int trapDamage = 25;
 
     [Header("Hunger system")]
-    public bool hungerEnabled = true;
+    public bool hungerEnabled = false;
     public float hungerGraceSec = 15f;          // 缓冲
     public float hungerNegRewardPerSec = -0.01f;// 缓冲后每秒RL负奖励（柔性）
     public bool hardStarvation = false;        // 是否启用硬性饿死

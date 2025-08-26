@@ -32,7 +32,7 @@ public class MyAgent : Agent
     private bool hasPre = false;
     private Vector2 prevAction = Vector2.zero; // 上一步动作
     [Range(0f, 1f)] public float actionEMA = 0.2f; // 越大越平滑但更“钝”
-    public float lambdaActionChange;
+    private Vector3 lastPos; // 上一次用于计算前进位移的参考点
 
     // ===sensor===
     [Header("Ray Sensors")]
@@ -47,7 +47,6 @@ public class MyAgent : Agent
         // エージェントの運動パラメータを初期化
         moveSpeed = cfg.moveSpeed;
         turnSpeed = cfg.turnSpeed;
-        lambdaActionChange = cfg.lambdaActionChange;
 
         // About sensor
         CreateRaySensors();
@@ -68,6 +67,7 @@ public class MyAgent : Agent
         prevAction = Vector2.zero;
         appliedAction = Vector2.zero;
         episodeElapsedSec = 0;
+        lastPos = transform.position;
 
         //出生点
         ResetAgentPos();
@@ -130,14 +130,14 @@ public class MyAgent : Agent
         turnInput = (actions.ContinuousActions.Length > 0)
                     ? Mathf.Clamp(actions.ContinuousActions[0], -1f, 1f) : 0f;
         throttleInput = (actions.ContinuousActions.Length > 1)
-                    ? Mathf.Clamp(actions.ContinuousActions[1], -1f, 1f) : 0f;
+                    ? Mathf.Clamp(actions.ContinuousActions[1], 0f, 1f) : 0f;
 
         Vector2 a = new Vector2(turnInput, throttleInput);
 
         if (hasPre)
         {
             float delta = (a - prevAction).sqrMagnitude; // L2^2
-            AddReward(-lambdaActionChange * delta);
+            AddReward(-cfg.lambdaActionChange * delta);
         }
         prevAction = a;
         hasPre = true;
@@ -147,6 +147,18 @@ public class MyAgent : Agent
             appliedAction = actionEMA * a + (1f - actionEMA) * appliedAction;
         else
             appliedAction = a;
+
+        // 奖励前向位移
+        // 计算从上次到现在的位移在“当前朝向”上的投影；只有为正（真向前了）才奖励
+        Vector3 disp = transform.position - lastPos;
+        float forwardStep = Vector3.Dot(disp, transform.forward); // 单位：米
+
+        if (forwardStep > cfg.eps)
+        {
+            // 与实际“向前推进距离”成正比奖励；前后抖动会互相抵消，刷不到分
+            AddReward(cfg.forwardReward * forwardStep);
+        }
+        lastPos = transform.position;
 
 
         // 饥饿机制（柔性/硬性）—— 按帧给 shaping
@@ -244,24 +256,24 @@ public class MyAgent : Agent
         sensorForward.DetectableTags = detectableTags;
         sensorForward.RaysPerDirection = 10;  //両側に10本のレイがあり、中央の一本を加えて全部21本
         sensorForward.MaxRayDegrees = 90f;  //前方扇形の角度
-        sensorForward.RayLength = 25f;  //レイの長さ
+        sensorForward.RayLength = 12f;  //レイの長さ
         sensorForward.SphereCastRadius = 0.05f; //レイの半径
         sensorForward.RayLayerMask = rayLayerMask; //探索されるlayerを指定
         sensorForward.StartVerticalOffset = 0.1f; //地面と間違えて接するのをさけるために少し上げる
         sensorForward.EndVerticalOffset = 0.1f;
 
 
-        // // ---------- B: 近距环形短射线 ----------
-        // sensorNearRing = gameObject.AddComponent<RayPerceptionSensorComponent3D>();
-        // sensorNearRing.SensorName = "Ray_B_NearRing";
-        // sensorNearRing.DetectableTags = detectableTags;
-        // sensorNearRing.RaysPerDirection = 15;       // 环形密一点
-        // sensorNearRing.MaxRayDegrees = 180f;       // 180° + 两侧 = 360° 环形
-        // sensorNearRing.RayLength = 5f;          // 贴身防漏
-        // sensorNearRing.SphereCastRadius = 0.05f;
-        // sensorNearRing.RayLayerMask = rayLayerMask;
-        // sensorNearRing.StartVerticalOffset = 0.1f;
-        // sensorNearRing.EndVerticalOffset = 0.1f;
+        // ---------- B: 近距环形短射线 ----------
+        sensorNearRing = gameObject.AddComponent<RayPerceptionSensorComponent3D>();
+        sensorNearRing.SensorName = "Ray_B_NearRing";
+        sensorNearRing.DetectableTags = detectableTags;
+        sensorNearRing.RaysPerDirection = 15;       // 环形密一点
+        sensorNearRing.MaxRayDegrees = 180f;       // 180° + 两侧 = 360° 环形
+        sensorNearRing.RayLength = 5f;          // 贴身防漏
+        sensorNearRing.SphereCastRadius = 0.05f;
+        sensorNearRing.RayLayerMask = rayLayerMask;
+        sensorNearRing.StartVerticalOffset = 0.1f;
+        sensorNearRing.EndVerticalOffset = 0.1f;
 
         
     }
