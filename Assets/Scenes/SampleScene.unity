@@ -145,7 +145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7969146291937014714, guid: 3d343781de476c545bf2944a340fbb98, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7969146291937014714, guid: 3d343781de476c545bf2944a340fbb98, type: 3}
       propertyPath: m_LocalPosition.z
@@ -182,6 +182,14 @@ PrefabInstance:
     - target: {fileID: 7969146291937014714, guid: 3d343781de476c545bf2944a340fbb98, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8413135554800004084, guid: 3d343781de476c545bf2944a340fbb98, type: 3}
+      propertyPath: m_Radius
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8413135554800004084, guid: 3d343781de476c545bf2944a340fbb98, type: 3}
+      propertyPath: m_Center.y
+      value: -0.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1185,6 +1193,9 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
+  useLowPassOnApplied: 1
+  actionEMA: 0.2
+  lambdaActionChange: 0
   rayLayerMask:
     serializedVersion: 2
     m_Bits: 448
@@ -2658,6 +2669,22 @@ PrefabInstance:
     - target: {fileID: 3222149511259150913, guid: 0aba5fdf01038c640a233db7cc05db9f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4080598145109964427, guid: 0aba5fdf01038c640a233db7cc05db9f, type: 3}
+      propertyPath: m_Size.x
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 4080598145109964427, guid: 0aba5fdf01038c640a233db7cc05db9f, type: 3}
+      propertyPath: m_Size.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4080598145109964427, guid: 0aba5fdf01038c640a233db7cc05db9f, type: 3}
+      propertyPath: m_Size.z
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 4080598145109964427, guid: 0aba5fdf01038c640a233db7cc05db9f, type: 3}
+      propertyPath: m_Center.y
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 4952193057612654001, guid: 0aba5fdf01038c640a233db7cc05db9f, type: 3}
       propertyPath: m_Name

@@ -21,13 +21,14 @@ MonoBehaviour:
   iFrameSeconds: 0.7
   moveSpeed: 5
   turnSpeed: 180
-  foodCount: 16
+  lambdaActionChange: 0.02
+  foodCount: 20
   trapCount: 5
-  foodHeight: 1
+  foodHeight: 0.5
   trapHeight: 0
   agentHeight: 0.5
   trapDamage: 25
-  hungerEnabled: 0
+  hungerEnabled: 1
   hungerGraceSec: 15
   hungerNegRewardPerSec: -0.01
   hardStarvation: 0
@@ -36,3 +37,4 @@ MonoBehaviour:
   hungerResetsOnFood: 1
   hungerExtraGraceOnFood: 30
   agentTag: Agent
+  episodeTimeLimitSec: 1200

@@ -5,6 +5,7 @@ using Unity.MLAgents.Actuators;
 using UnityEngine.Assertions.Must;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+//using System.Numerics;
 
 
 public class MyAgent : Agent
@@ -12,16 +13,26 @@ public class MyAgent : Agent
     private int hp;
     private float timeSinceLastFood;
     GameConfig cfg;
+    private float episodeElapsedSec = 0f;    // 本回合已流逝的时间（秒）
 
     // ====运动参数====
     [Header("Movement")]
     private float moveSpeed;     // 前进速度 m/s
     private float turnSpeed;   // 转向速度 度/s
+    public bool useLowPassOnApplied = true;
+
     private Rigidbody rb;
 
     // ===用于保存动作输入===
     private float turnInput;
     private float throttleInput;
+
+    // ===动作连贯性===
+    private Vector2 appliedAction = Vector2.zero;  // 实际用于控制的动作（平滑后）
+    private bool hasPre = false;
+    private Vector2 prevAction = Vector2.zero; // 上一步动作
+    [Range(0f, 1f)] public float actionEMA = 0.2f; // 越大越平滑但更“钝”
+    public float lambdaActionChange;
 
     // ===sensor===
     [Header("Ray Sensors")]
@@ -36,6 +47,7 @@ public class MyAgent : Agent
         // エージェントの運動パラメータを初期化
         moveSpeed = cfg.moveSpeed;
         turnSpeed = cfg.turnSpeed;
+        lambdaActionChange = cfg.lambdaActionChange;
 
         // About sensor
         CreateRaySensors();
@@ -52,6 +64,10 @@ public class MyAgent : Agent
 
         hp = cfg.agentMaxHP;
         timeSinceLastFood = 0f;
+        hasPre = false;
+        prevAction = Vector2.zero;
+        appliedAction = Vector2.zero;
+        episodeElapsedSec = 0;
 
         //出生点
         ResetAgentPos();
@@ -116,7 +132,24 @@ public class MyAgent : Agent
         throttleInput = (actions.ContinuousActions.Length > 1)
                     ? Mathf.Clamp(actions.ContinuousActions[1], -1f, 1f) : 0f;
 
-        // 饥饿机制（柔性/硬性）——按帧给 shaping
+        Vector2 a = new Vector2(turnInput, throttleInput);
+
+        if (hasPre)
+        {
+            float delta = (a - prevAction).sqrMagnitude; // L2^2
+            AddReward(-lambdaActionChange * delta);
+        }
+        prevAction = a;
+        hasPre = true;
+
+        // 对输入动作做低通，减少物理抖动
+        if (useLowPassOnApplied)
+            appliedAction = actionEMA * a + (1f - actionEMA) * appliedAction;
+        else
+            appliedAction = a;
+
+
+        // 饥饿机制（柔性/硬性）—— 按帧给 shaping
         if (cfg.hungerEnabled)
         {
             float dt = Time.deltaTime;
@@ -165,6 +198,28 @@ public class MyAgent : Agent
     //
     private void FixedUpdate()
     {
+        //sensor debug
+        //#if UNITY_EDITOR
+        //if (Time.frameCount % 15 == 0)  // 每隔几帧
+        //{
+        //    var foods = GameObject.FindGameObjectsWithTag("Food");
+        //    foreach (var f in foods)
+        //        Debug.DrawLine(transform.position + Vector3.up * 1.0f,  // 与 StartVerticalOffset 对齐
+        //                    f.transform.position, Color.yellow, 0.3f);
+        //}
+        //#endif
+
+        // 超时检查
+        episodeElapsedSec += Time.fixedDeltaTime;
+        if (episodeElapsedSec >= cfg.episodeTimeLimitSec)
+        {
+            EndEpisode();
+            GameManager.Instance.EndEpisode();
+            // 一般无需再调用 GameManager.Instance.EndEpisode()，避免重复重置；
+            // 因为 OnEpisodeBegin() 已经会调用 ResetEnvironment()。
+        }
+        float turnInput = appliedAction.x;
+        float throttleInput = appliedAction.y;
         // === 转向 ===
         float yawDelta = turnInput * turnSpeed * Time.fixedDeltaTime;
         if (Mathf.Abs(yawDelta) > 0f)
@@ -187,26 +242,26 @@ public class MyAgent : Agent
         sensorForward = gameObject.AddComponent<RayPerceptionSensorComponent3D>();
         sensorForward.SensorName = "Ray_Forward";
         sensorForward.DetectableTags = detectableTags;
-        sensorForward.RaysPerDirection = 6;  //両側に六本のレイがあり、中央の一本を加えて全部十三本
+        sensorForward.RaysPerDirection = 10;  //両側に10本のレイがあり、中央の一本を加えて全部21本
         sensorForward.MaxRayDegrees = 90f;  //前方扇形の角度
-        sensorForward.RayLength = 12f;  //レイの長さ
+        sensorForward.RayLength = 25f;  //レイの長さ
         sensorForward.SphereCastRadius = 0.05f; //レイの半径
         sensorForward.RayLayerMask = rayLayerMask; //探索されるlayerを指定
         sensorForward.StartVerticalOffset = 0.1f; //地面と間違えて接するのをさけるために少し上げる
         sensorForward.EndVerticalOffset = 0.1f;
 
 
-        // ---------- B: 近距环形短射线 ----------
-        sensorNearRing = gameObject.AddComponent<RayPerceptionSensorComponent3D>();
-        sensorNearRing.SensorName = "Ray_B_NearRing";
-        sensorNearRing.DetectableTags = detectableTags;
-        sensorNearRing.RaysPerDirection = 8;       // 环形密一点
-        sensorNearRing.MaxRayDegrees = 180f;       // 180° + 两侧 = 360° 环形
-        sensorNearRing.RayLength = 1.25f;          // 贴身防漏
-        sensorNearRing.SphereCastRadius = 0.05f;
-        sensorNearRing.RayLayerMask = rayLayerMask;
-        sensorNearRing.StartVerticalOffset = 0.1f;
-        sensorNearRing.EndVerticalOffset = 0.1f;
+        // // ---------- B: 近距环形短射线 ----------
+        // sensorNearRing = gameObject.AddComponent<RayPerceptionSensorComponent3D>();
+        // sensorNearRing.SensorName = "Ray_B_NearRing";
+        // sensorNearRing.DetectableTags = detectableTags;
+        // sensorNearRing.RaysPerDirection = 15;       // 环形密一点
+        // sensorNearRing.MaxRayDegrees = 180f;       // 180° + 两侧 = 360° 环形
+        // sensorNearRing.RayLength = 5f;          // 贴身防漏
+        // sensorNearRing.SphereCastRadius = 0.05f;
+        // sensorNearRing.RayLayerMask = rayLayerMask;
+        // sensorNearRing.StartVerticalOffset = 0.1f;
+        // sensorNearRing.EndVerticalOffset = 0.1f;
 
         
     }

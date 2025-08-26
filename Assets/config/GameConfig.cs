@@ -15,10 +15,11 @@ public class GameConfig : ScriptableObject
     public float iFrameSeconds = 0.7f;
     public float moveSpeed = 5f;
     public float turnSpeed = 180f;
+    public float lambdaActionChange = 0.02f;   // 连贯性系数，先小一点
 
     [Header("GameInitial")]
-    public int foodCount = 8;
-    public int trapCount = 4;
+    public int foodCount = 16;
+    public int trapCount = 5;
     public float foodHeight = 1f;
     public float trapHeight = 0f;
     public float agentHeight = 0.5f;
@@ -37,7 +38,11 @@ public class GameConfig : ScriptableObject
     public bool hungerResetsOnFood = true;
     public float hungerExtraGraceOnFood = 30f;  //吃到食物后的奖励时间
 
-    
+
     [Header("Tags/Layers")]
     public string agentTag = "Agent";
+    
+    [Header("Episode Limit")]
+    public float episodeTimeLimitSec = 1200f;  // 每回合上限（秒）
+
 }
