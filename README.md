@@ -50,14 +50,15 @@ After training, an MyAgent.onnx model will be exported, which can be attached to
 
 
 ## Skills Learned by the Agent
-1.Actively searching for food to increase survival time.
-2.Avoiding traps and walls.
-3.Escaping from corners and continuing exploration.
-4.Learning smoother movement patterns due to the action consistency penalty.
-5.Forming a cycle of exploration → foraging → survival under the hunger mechanism.
+- Actively searching for food to increase survival time.
+- Avoiding traps and walls.
+- Escaping from corners and continuing exploration.
+- Learning smoother movement patterns due to the action consistency penalty.
+- Forming a cycle of exploration → foraging → survival under the hunger mechanism.
 
 ## Future work
-1.Add predator-prey dynamics.
-2.Introduce more complex map structures.
-3.Multi-agent cooperation and competition.
+- Add predator-prey dynamics.
+- Introduce more complex map structures.
+- Multi-agent cooperation and competition.
+
 
