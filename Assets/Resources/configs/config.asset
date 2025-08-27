@@ -13,23 +13,24 @@ MonoBehaviour:
   m_Name: config
   m_EditorClassIdentifier: Assembly-CSharp::GameConfig
   foodReward: 3
-  forwardReward: 0.05
-  trapPenalty: -3
+  forwardReward: 0.1
+  trapPenalty: -4
   surviveRewardPerSecond: 0.01
   getCatched: -1
-  deadPenalty: -5
+  deadPenalty: -6
   agentMaxHP: 100
   iFrameSeconds: 0.7
   moveSpeed: 5
   turnSpeed: 180
   lambdaActionChange: 0.005
   eps: 0.01
-  foodCount: 30
-  trapCount: 5
+  foodCount: 20
+  trapCount: 7
   foodHeight: 0.5
   trapHeight: 0
   agentHeight: 0.5
   trapDamage: 25
+  wallContactPenaltyPerSec: -0.02
   hungerEnabled: 0
   hungerGraceSec: 15
   hungerNegRewardPerSec: -0.01

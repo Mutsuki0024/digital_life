@@ -40,6 +40,11 @@ public class MyAgent : Agent
     private RayPerceptionSensorComponent3D sensorForward; // 远距前向扇形
     private RayPerceptionSensorComponent3D sensorNearRing; // 近距环形
 
+    // ===墙体检测===
+    private readonly HashSet<Collider> touchingWalls = new HashSet<Collider>();
+    private int isTouchingWall = 0; // 0/1 观测用
+
+
     public override void Initialize()
     {
         cfg = Config.Instance;
@@ -68,6 +73,8 @@ public class MyAgent : Agent
         appliedAction = Vector2.zero;
         episodeElapsedSec = 0;
         lastPos = transform.position;
+        touchingWalls.Clear();
+        isTouchingWall = 0;
 
         //出生点
         ResetAgentPos();
@@ -121,26 +128,32 @@ public class MyAgent : Agent
         // 4) （可选）上一帧动作，有助于稳定与 credit assignment
         sensor.AddObservation(turnInput);     // [-1, 1]
         sensor.AddObservation(throttleInput); // [-1, 1]
+
+        // 5） 是否与墙体解除
+        sensor.AddObservation(isTouchingWall); //0 or 1
         //Debug.Log("Collecting...");
     }
 
     public override void OnActionReceived(ActionBuffers actions)
     {
+        //Debug.Log(isTouchingWall);
         // 读取动作（-1~1）
         turnInput = (actions.ContinuousActions.Length > 0)
                     ? Mathf.Clamp(actions.ContinuousActions[0], -1f, 1f) : 0f;
         throttleInput = (actions.ContinuousActions.Length > 1)
                     ? Mathf.Clamp(actions.ContinuousActions[1], 0f, 1f) : 0f;
 
+
         Vector2 a = new Vector2(turnInput, throttleInput);
 
-        if (hasPre)
-        {
-            float delta = (a - prevAction).sqrMagnitude; // L2^2
-            AddReward(-cfg.lambdaActionChange * delta);
-        }
-        prevAction = a;
-        hasPre = true;
+        // 动作平滑惩罚
+        // if (hasPre)
+        // {
+        //     float delta = (a - prevAction).sqrMagnitude; // L2^2
+        //     AddReward(-cfg.lambdaActionChange * delta);
+        // }
+        // prevAction = a;
+        // hasPre = true;
 
         // 对输入动作做低通，减少物理抖动
         if (useLowPassOnApplied)
@@ -275,10 +288,10 @@ public class MyAgent : Agent
         sensorNearRing.StartVerticalOffset = 0.1f;
         sensorNearRing.EndVerticalOffset = 0.1f;
 
-        
+
     }
 
-    //=========与食物、陷阱、捕食者交互逻辑===========
+    //=========与食物、陷阱、捕食者、墙壁交互逻辑===========
     public void OnAteFood()
     {
         AddReward(cfg.foodReward);
@@ -309,4 +322,33 @@ public class MyAgent : Agent
             GameManager.Instance.EndEpisode();
         }
     }
+
+    void OnCollisionStay(Collision other)
+    {
+        if (other.collider.CompareTag("Wall"))
+        {
+            // 每物理步给一点点负奖励（数值很小，避免覆盖吃食物的正奖励）
+            AddReward(cfg.wallContactPenaltyPerSec * Time.fixedDeltaTime);
+            
+        }
+    }
+    
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.collider.CompareTag("Wall"))  // 也可用 layer 判断
+        {
+            touchingWalls.Add(other.collider);
+            isTouchingWall = 1;
+        }
+    }
+
+    private void OnCollisionExit(Collision other)
+    {
+        if (other.collider.CompareTag("Wall"))
+        {
+            touchingWalls.Remove(other.collider);
+            isTouchingWall = touchingWalls.Count > 0 ? 1 : 0;
+        }
+    }
+
 }

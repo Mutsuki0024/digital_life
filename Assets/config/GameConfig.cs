@@ -30,6 +30,9 @@ public class GameConfig : ScriptableObject
     [Header("Trap")]
     public int trapDamage = 25;
 
+    [Header("Wall/Corner")]
+    public float wallContactPenaltyPerSec = -0.02f;  // 轻微即可
+
     [Header("Hunger system")]
     public bool hungerEnabled = false;
     public float hungerGraceSec = 15f;          // 缓冲
