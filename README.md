@@ -38,10 +38,10 @@ The goal is to train an agent with reinforcement learning to acquire basic survi
 
 ## How to Use
 ### 1. Run the Pre-trained Model
-A trained model (`MyAgent.onnx`) has already been included in the project.  
+A trained model (`250k_steps.onnx`) has already been included in the project.  
 Simply open the Unity project and **compile/run the scene** — the agent will immediately demonstrate its learned behavior.
 
-### 2. Train from Scratch (Optional)
+### 2. Train from Scratch
 If you want to retrain the agent:  
 ```bash
 mlagents-learn config/train.yaml --run-id=digital_life --env=build/digital_life.exe --force
@@ -60,3 +60,4 @@ After training, an MyAgent.onnx model will be exported, which can be attached to
 1.Add predator-prey dynamics.
 2.Introduce more complex map structures.
 3.Multi-agent cooperation and competition.
+
